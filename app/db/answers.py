@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import hdbscan
 import umap
@@ -7,7 +8,7 @@ from models.models import Answer, TreeNode
 
 
 # or another location where your Weaviate instance is running
-client = weaviate.Client("http://10.25.10.19:8080")
+client = weaviate.Client(os.environ["WEAVIATE_URL"])
 
 
 def get_answers(questionRef: str) -> List[Answer]:

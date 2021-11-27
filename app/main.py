@@ -5,11 +5,12 @@ import weaviate
 from models.models import Answer, Question
 import redis
 import pickle
+import os
 
 redis = redis.Redis(host='localhost', port=6379)
 
 # or another location where your Weaviate instance is running
-client = weaviate.Client("http://10.25.10.19:8080")
+client = weaviate.Client(os.environ['WEAVIATE_URL'])
 
 app = FastAPI()
 
