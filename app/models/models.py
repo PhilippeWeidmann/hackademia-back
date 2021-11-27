@@ -6,6 +6,7 @@ class Answer(BaseModel):
     answerText: str
     vector: Optional[list[int]] = None
     ratings: Optional[list[int]] = None
+    answered_by: Optional[str] = None
 
 
 class Question(BaseModel):
