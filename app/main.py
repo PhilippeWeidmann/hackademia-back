@@ -7,7 +7,7 @@ import redis
 import pickle
 import os
 
-redis = redis.Redis(host='localhost', port=6379)
+redis = redis.Redis(host=os.environ['REDIS_HOST'], port=os.environ['REDIS_PORT'])
 
 # or another location where your Weaviate instance is running
 client = weaviate.Client(os.environ['WEAVIATE_URL'])
