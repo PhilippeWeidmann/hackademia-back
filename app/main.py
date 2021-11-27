@@ -28,13 +28,18 @@ def get_answer_tree(questionRef: str) -> List[TreeNode]:
 
 
 @app.put('/question/{questionRef}/answers', response_model=str)
-def add_answer(questionRef: str, answer: Answer) -> str:
+def add_answer(questionRef: int, answer: Answer) -> str:
     '''
     Returns the UUID of the created answer
     '''
+    answerDict = answer.dict()
+    answerDict['questionId'] = questionRef
+    answerDict.pop('vector')
+    answerDict.pop('ratings')
+
     return client.data_object\
         .create(
-            data_object=answer.dict() + {'questionId': questionRef},
+            data_object=answerDict,
             class_name="Answer")
 
 
