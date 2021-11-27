@@ -1,14 +1,17 @@
 from typing import Optional, List
 from pydantic import BaseModel
 
+
 class Answer(BaseModel):
     answerText: str
     vector: Optional[list[int]] = None
     ratings: Optional[list[int]] = None
 
+
 class Question(BaseModel):
-    questionId: str
+    questionId: int
     questionText: str
+
 
 class TreeNode(BaseModel):
     parent: str

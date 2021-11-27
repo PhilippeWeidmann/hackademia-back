@@ -4,7 +4,7 @@ import hdbscan
 import umap
 import weaviate
 from typing import List
-from app.models.models import Answer, TreeNode
+from models.models import Answer, TreeNode
 
 
 # or another location where your Weaviate instance is running
