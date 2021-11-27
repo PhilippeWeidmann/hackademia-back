@@ -72,10 +72,16 @@ def get_question(questionRef: str) -> Question:
         .do()["data"]["Get"]["Question"]
 """
 @app.get("/questions/{questionID}")
-def get_question_by_id(questionID: str) -> Question:
+def get_question_by_id(questionID: int) -> Question:
+    where_filter = {
+        "path": ["questionId"],
+        "operator": "Equal",
+        "valueNumber": questionID
+        }
+
     return client.query\
         .get("Question", ["questionText", "questionId", "html"])\
-        .with_id(questionID)\
+        .with_where(where_filter)\
         .do()["data"]["Get"]["Question"]
 
 

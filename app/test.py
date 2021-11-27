@@ -1,15 +1,20 @@
 import weaviate
 
-client = weaviate.Client('http://localhost:8081')
+client = weaviate.Client('http://glossastra.unige.ch:8081')
 
-where_filter = {
+def get_question_by_id(questionID: int):
+    where_filter = {
         "path": ["questionId"],
         "operator": "Equal",
-        "valueString": 9
+        "valueNumber": questionID
         }
 
-client.query\
+    return client.query\
         .get("Question", ["questionText", "questionId", "html"])\
         .with_where(where_filter)\
         .do()["data"]["Get"]["Question"]
+
+
+obj = get_question_by_id(7)
+print(type(obj))
 
