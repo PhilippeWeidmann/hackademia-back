@@ -1,8 +1,8 @@
 from typing import List
 from fastapi import FastAPI
-from db.answers import get_tree, TreeNode
+from db.answers import get_tree
 import weaviate
-from models.models import Answer, Question
+from models.models import Answer, TreeNode, Question
 import redis
 import pickle
 import os
@@ -45,7 +45,7 @@ def get_questions_near_terms(search_terms) -> List[Question]:
         "concepts": search_terms,
         "certainty": 0.7
     }
-    # TODO: Implement USE embedding and use near_vector search...
+    # TODO: Implement MUSE embedding and use near_vector search...
 
     return client.query\
         .get("Question", ["questionText", "questionId", "html"])\
@@ -58,3 +58,33 @@ def get_questions() -> List[Question]:
     return client.query\
         .get("Question", ["questionText", "questionId", "html"])\
         .do()["data"]["Get"]["Question"]
+
+"""
+def get_question(questionRef: str) -> Question:
+    where_filter = {
+        "path": ["question"],
+        "operator": "Equal",
+        "valueString": questionRef
+        }
+    return client.query\
+        .get("Question", ["questionText", "questionId", "html"])\
+        .with_where(where_filter)\
+        .do()["data"]["Get"]["Question"]
+"""
+@app.get("/questions/{questionID}")
+def get_question_by_id(questionID: str) -> Question:
+    return client.query\
+        .get("Question", ["questionText", "questionId", "html"])\
+        .with_id(questionID)\
+        .do()["data"]["Get"]["Question"]
+
+
+@app.put("/questions")
+def add_question(question: Question) -> str:
+    '''
+    Returns the UUID of the created answer
+    '''
+    return client.data_object\
+        .create(
+            data_object=question.dict() + {'questionId': question.questionId, 'questionText': question.questionText},
+            class_name="Question")
